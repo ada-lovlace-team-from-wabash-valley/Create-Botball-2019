@@ -1,62 +1,78 @@
-//This is the Ada Lovelace team's testing programs.
+#include <kipr/botball.h>
+#include "../include/Robot.h"
 
-//Temporary Placement of defines
+
 #define lift 0
 #define claw 1
 #define sweeper 3
 
-#define lift_up 1065
+#define lift_up 980
+#define lift_up_2 650
 #define lift_down 0
+#define lift_down_other 1700
 
 #define claw_open 1470
 #define claw_close 556
+#define claw_start 2000
 
-//Included Libraries:
-#include <kipr/botball.h>
-#include "create_library.h"
-#include "variables.h"
+#define sweeper_close 10
 
-//Functions
-void grabbing_botguy();
-void start();
-void stop();
+void right_tower();
+void middle_tower();
+void left_tower();
 
-int main()
+int main() //Calls all functions
 {
-    start();
-    grabbing_botguy();
-    stop();
+    create_connect();
+    set_servo_position(lift, lift_down);
+    set_servo_position(claw, claw_start);
+    set_servo_position(sweeper, sweeper_close);
+    enable_servos();
+    middle_tower();
+    disable_servos();
+    create_stop();
+    create_disconnect();
     return 0;
 }
 
-void start() {
-    create_connect();
-    printf("blue\n");
-}
-
-void stop() {
-    create_stop();
-    create_disconnect();
-}
-
-void grabbing_botguy() {
-    enable_servo(claw);
-    enable_servo(lift);
+void right_tower() {
     servo(lift, lift_up);
-    msleep(1000);
-    servo(claw, claw_open);
-    msleep(1000);
-    create_drive_direct(70, 70);
-    msleep(8000);
-    create_stop();
+    backward_with_encoder(6, NORMAL_SPEED);
+    spin_right_with_encoder(98, NORMAL_SPEED);
+    forward_with_encoder(33, NORMAL_SPEED);
     servo(claw, claw_close);
-    msleep(1000);
-    create_drive_direct(-70, -70);
-    msleep(3000);
-    create_stop();
+    servo(lift, lift_up_2);
+    backward_with_encoder(10, NORMAL_SPEED);
+    spin_right_with_encoder(180, NORMAL_SPEED);
     servo(lift, lift_down);
-    msleep(1000);
     servo(claw, claw_open);
-    msleep(1000);
-    create_stop();
+}
+
+void middle_tower() {
+    //change last lift_down to lowest other way
+    enable_servos();
+    servo(lift, lift_up);
+    backward_with_encoder(6, NORMAL_SPEED);
+    spin_right_with_encoder(98, NORMAL_SPEED);
+    forward_with_encoder(33, NORMAL_SPEED);
+    servo(claw, claw_close);
+    servo(lift, lift_up_2);
+    backward_with_encoder(10, NORMAL_SPEED);
+    spin_right_with_encoder(200, NORMAL_SPEED);
+    servo(lift, lift_down_other);
+    servo(claw, claw_open);
+}
+
+void left_tower(){
+    enable_servos();
+    servo(lift, lift_up);
+    forward_with_encoder(2, NORMAL_SPEED);
+    spin_right_with_encoder(98, NORMAL_SPEED);
+    forward_with_encoder(33, NORMAL_SPEED);
+    servo(claw, claw_close);
+    servo(lift, lift_up_2);
+    backward_with_encoder(10, NORMAL_SPEED);
+    spin_right_with_encoder(180, NORMAL_SPEED);
+    servo(lift, lift_down);
+    servo(claw, claw_open);
 }
