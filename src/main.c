@@ -8,6 +8,8 @@
 
 #define lift_up 980
 #define lift_up_2 650
+#define lift_up_smaller_tower 1325
+#define lift_up_smaller_tower_2 1100
 #define lift_down 0
 #define lift_down_other 1700
 
@@ -36,12 +38,12 @@ int main() //Calls all functions
 }
 
 void right_tower() {
-    servo(lift, lift_up);
-    backward_with_encoder(6, NORMAL_SPEED);
+    servo(lift, lift_up_smaller_tower);
+    backward_with_encoder(18, NORMAL_SPEED);
     spin_right_with_encoder(98, NORMAL_SPEED);
     forward_with_encoder(33, NORMAL_SPEED);
     servo(claw, claw_close);
-    servo(lift, lift_up_2);
+    servo(lift, lift_up_smaller_tower_2);
     backward_with_encoder(10, NORMAL_SPEED);
     spin_right_with_encoder(180, NORMAL_SPEED);
     servo(lift, lift_down);
@@ -54,25 +56,42 @@ void middle_tower() {
     servo(lift, lift_up);
     backward_with_encoder(6, NORMAL_SPEED);
     spin_right_with_encoder(98, NORMAL_SPEED);
-    forward_with_encoder(33, NORMAL_SPEED);
+    forward_with_encoder(32, NORMAL_SPEED);
     servo(claw, claw_close);
     servo(lift, lift_up_2);
     backward_with_encoder(10, NORMAL_SPEED);
     spin_right_with_encoder(200, NORMAL_SPEED);
     servo(lift, lift_down_other);
     servo(claw, claw_open);
+    servo(lift, lift_up);
+    //Right Tower
+    spin_left_with_encoder(90, 90);
+    forward_with_encoder(12, 90);
+    spin_left_with_encoder(100, 90);
+    servo(lift, lift_up_smaller_tower);
+    forward_with_encoder(1, 90);
+    servo(claw, claw_close);
+    servo(lift, lift_up_smaller_tower_2);
+    backward_with_encoder(10, NORMAL_SPEED);
+    spin_left_with_encoder(140, NORMAL_SPEED);
+    backward_with_encoder(3, NORMAL_SPEED);
+    servo(lift, lift_down_other);
+    servo(claw, claw_open);
+    servo(lift, lift_down);
 }
 
 void left_tower(){
     enable_servos();
-    servo(lift, lift_up);
-    forward_with_encoder(2, NORMAL_SPEED);
-    spin_right_with_encoder(98, NORMAL_SPEED);
-    forward_with_encoder(33, NORMAL_SPEED);
+    servo(lift, lift_up_smaller_tower);
+    forward_with_encoder(10, NORMAL_SPEED);
+    spin_right_with_encoder(101, NORMAL_SPEED);
+    forward_with_encoder(22, NORMAL_SPEED);
     servo(claw, claw_close);
-    servo(lift, lift_up_2);
+    servo(lift, lift_up_smaller_tower_2);
     backward_with_encoder(10, NORMAL_SPEED);
-    spin_right_with_encoder(180, NORMAL_SPEED);
-    servo(lift, lift_down);
+    spin_right_with_encoder(140, NORMAL_SPEED);
+    backward_with_encoder(3, NORMAL_SPEED);
+    servo(lift, lift_down_other);
     servo(claw, claw_open);
+    servo(lift, lift_down);
 }
