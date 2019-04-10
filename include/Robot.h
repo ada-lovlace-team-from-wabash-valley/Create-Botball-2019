@@ -15,23 +15,17 @@
 #define GREEN 2 //Channel for camera color use
 #define NO_COLOR -1 //Channel for camera color use
 
-#define ORANGE_POM_SERVO 2
-#define ORANGE_POM_CLOSE 2000
-#define ORANGE_POM_OPEN 0
-
-#define LEFT_TRACK 2
-#define RIGHT_TRACK 3
-
 #define LIGHT_PORT 0
 #define BLACK_LINE 2000
 
 //Servo Movement Definitions (Units are servo steps per loop iteration)
 #define NORMAL_SLOW_SERVO_SPEED  10
-#define NORMAL_SERVO_SPEED 20
+#define NORMAL_SERVO_SPEED 30
 
 #define DRIVE_SPEED 150
-#define NORMAL_SPEED 90
+#define NORMAL_SPEED 120
 
+void start_camera();
 void start();
 void press_a();
 void forward_with_encoder(float inches, float power);
