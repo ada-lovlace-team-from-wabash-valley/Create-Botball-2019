@@ -1,27 +1,43 @@
 #include <kipr/botball.h>
 #include "../include/Robot.h"
 
+int TOGGLE=FALSE;
+void start_camera() {
+    int k;
+
+    printf("Initializing the camera...\n");
+    camera_open();
+    for (k = 0; k < 10; k = k + 1) {
+        printf("  Taking a picture...\n");
+        camera_update();
+    }
+    printf("  Initializing the camera is DONE!\n");
+}
 
 void start(){
     printf("Trying connect to the create\n");
-    create_connect();
+    //create_connect();
     printf("Connected to the create\n");
     //set_servo_position(ORANGE_POM_SERVO, ORANGE_POM_OPEN);
-    //wait_for_light(LIGHT_PORT);
-    //shut_down_in(119);
+    wait_for_light(LIGHT_PORT);
+    shut_down_in(119);
     //enable_servo(ORANGE_POM_SERVO);
 }
 
 //This function uses the A button to continue program
 void press_a(){
-    printf("Press A to continue\n");
-    while (TRUE){
-        if (a_button() == 1){
-            printf("Hands-off\n");
-            msleep(1000);
-            break;
-        }
-        msleep(10);
+    if(TOGGLE==TRUE){
+        printf("Press A to continue\n");
+        while (TRUE){
+        	if (a_button() == 1){
+            	printf("Hands-off\n");
+            	msleep(1000);
+            	break;
+        	}
+        	msleep(10);
+    	}
+   }else {
+        msleep(500);
     }
 }
 
@@ -31,7 +47,7 @@ void forward_with_encoder(float inches, float power){
     int distance_in_MM = inches * MM_PER_INCH;
     while(TRUE){
         if(get_create_distance() <= distance_in_MM){
-            create_drive_straight(power);
+            create_drive_direct(.8*power, power);
             //printf("Inches Traveld: %0.2f\n", get_create_distance()/MM_PER_INCH);
         }
         else{
@@ -41,6 +57,7 @@ void forward_with_encoder(float inches, float power){
         msleep(20);
     }
     printf("Inches Traveled: %0.2f\n", get_create_distance()/MM_PER_INCH);
+    press_a();
 }
 
 //This function uses encoders to drive the Create backward
@@ -49,7 +66,7 @@ void backward_with_encoder(float inches, float power){
     int distance_in_MM = inches * MM_PER_INCH;
     while(TRUE){
         if(-get_create_distance() <= distance_in_MM){
-            create_drive_straight(-power);
+            create_drive_direct(-.8*power, -power);
             //printf("Inches Traveld: %0.2f\n", get_create_distance()/MM_PER_INCH);
         }
         else{
@@ -59,6 +76,7 @@ void backward_with_encoder(float inches, float power){
         msleep(20);
     }
     printf("Inches Traveled: %0.2f\n", get_create_distance()/MM_PER_INCH);
+    press_a();
 }
 
 //This function spins the creat right X degrees using encoders
@@ -75,6 +93,7 @@ void spin_right_with_encoder(float degrees, float power){
         msleep(20);
     }
     printf("Degrees Traveld: %d\n", TURNED);
+    press_a();
 }
 
 //This function spins the creat left X degrees using encoders
@@ -91,6 +110,7 @@ void spin_left_with_encoder(float degrees, float power){
         msleep(20);
     }
     printf("Degrees Traveld: %d\n", TURNED);
+    press_a();
 }
 
 //This function will spin the creat right until it sees a black line
@@ -288,26 +308,6 @@ void servo_slowly(int port, int desired_position, int speed)
     msleep(50);
     set_servo_position(port, desired_position);
     msleep(50);
-}
-
-//This function pulls orange poms from post and puts them in the date bin
-void collect_orange_poms(){
-    servo(ORANGE_POM_SERVO, ORANGE_POM_CLOSE);
-    motor(RIGHT_TRACK, -100);
-    motor(LEFT_TRACK, -100);
-    msleep(10000);
-    ao();
-    servo(ORANGE_POM_SERVO, ORANGE_POM_OPEN);
-}
-
-//This function pushes poms off of the post into the date bin
-void push_orange_poms(){
-    servo(ORANGE_POM_SERVO, ORANGE_POM_CLOSE);
-    motor(RIGHT_TRACK, 100);
-    motor(LEFT_TRACK, 100);
-    msleep(10000);
-    ao();
-    servo(ORANGE_POM_SERVO, ORANGE_POM_OPEN);
 }
 
 //This function will drive the create backward until it hits the bump sensor
